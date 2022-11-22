@@ -22,3 +22,10 @@ class TaskUpdateView(APIView):
             serializer.save()
             return Response(status=status.HTTP_201_CREATED, data=serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST, data='Wrong parameters')
+
+
+class DeleteTaskView(APIView):
+    def delete(self, request, *args, **kwargs):
+        objects = get_object_or_404(IssueTracker, pk=kwargs['pk'])
+        objects.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
