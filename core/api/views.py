@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.serializer import TaskSerializer
-from tracker.models import IssueTracker
+from api.serializer import TaskSerializer, ProjectSerializer
+from tracker.models import IssueTracker, Project
 
 
 class TaskView(APIView):
@@ -29,3 +29,10 @@ class DeleteTaskView(APIView):
         objects = get_object_or_404(IssueTracker, pk=kwargs['pk'])
         objects.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProjectView(APIView):
+    def get(self, request, *args, **kwargs):
+        objects = get_object_or_404(Project, pk=kwargs['pk'])
+        serializer = ProjectSerializer(objects)
+        return Response(serializer.data, status=status.HTTP_200_OK)
